@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <title>Lanchonete e Restaurante</title>
+        <link rel = "stylesheet" type = "text/css" href="CSS/style.css"/>
+    </h:head>
+    <h:body>
+        <div>
+            <h1 style = " text-align: center">Lanchonete e Restaurante</h1>
+        </div>
+        <div  class = "Listas">            
+            <div  style = " background-color: black;
+                  color: whitesmoke;
+                  padding: 20px;
+                  width: 900px;
+                  border-radius: 10px;
+                  display: flex;
+                  margin: 0 auto;
+                  justify-content: space-between;">
+                <div>
+                    <h2>Vendedores</h2>
+                </div>
+                <div>
+                    <h:form>
+                        <h:dataTable value="#{JSFReserva.users}" var="users">  
+
+                            <h:column>
+                                <h:outputText value="#{users}" />
+                            </h:column>
+                            <h:column>
+                                <h:commandButton value= "Escolher" action="#{JSFReserva.setUsuario(users)}" />
+                            </h:column>
+
+
+                        </h:dataTable>                       
+                    </h:form>
+                </div>
+                <div>
+                    <h:form>
+                        <h:column>
+                            <h:commandButton value="Commitar" action="#{JSFReserva.commit()}" />
+                            <h:commandButton value="Abort" action="#{JSFReserva.abort()}" />
+                            <h:commandButton value="Random" action="#{JSFReserva.thread()}" />
+                        </h:column>
+                    </h:form>
+                </div>
+            </div>              
+        </div>
+        <div>
+            <div style = " background-color: whitesmoke;
+                 padding: 20px;
+                 border-radius: 25px;
+                 display: flex;
+                 width: 900px;
+                 height: 700px;
+                 margin: 0 auto;
+                 justify-content: space-between;">
+                <div  class = "Listas">
+                    <div>
+                        <h2>Lista de mesas:</h2>
+                        <h:form>
+                            <h:dataTable value="#{JSFMesa.all}" var="messi">
+                                <h:column>
+                                    <h:outputText value="#{messi.descricao}" />
+                                </h:column>
+                                <!-- Parte 2 -->
+                                <h:column>
+                                    <h:commandButton value="Verificar" action="#{JSFReserva.read(messi)}" />
+                                    <h:commandButton value="Reservar" action="#{JSFReserva.add(messi)}" />
+                                    <h:commandButton value="Liberar" action="#{JSFReserva.free(messi)}" />
+
+                                </h:column>
+                            </h:dataTable>
+                        </h:form>
+                    </div>
+                    <div>
+                        <h2>Mesas Reservadas</h2>
+                        <h:form>
+                            <h:dataTable value="#{JSFReserva.all}" var="rese">
+                                <h:column>
+                                    <h:outputText value="Vendedor: #{rese.mesa.usuario}," />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="ID: #{rese.mesa.id}," />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="OP: #{rese.mesa.op}," />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="#{rese.mesa.descricao} em uso." />
+                                </h:column>
+                            </h:dataTable>
+
+                        </h:form>
+
+                    </div>
+
+                </div>
+                <div  class = "Listas">
+                    <div>
+                        <h2>Fila</h2>
+                        <h:form>
+                            <h:dataTable value="#{JSFReserva.fila}" var="fila">
+                                <h:column>
+                                    <h:outputText value="Vendedor #{fila.mesa.usuario}:" />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value=" Cliente #{fila.mesa.id}." />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="OP: #{fila.mesa.op}." />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="#{fila.mesa.descricao} operação em espera." />
+                                </h:column>
+
+                            </h:dataTable>
+
+                        </h:form>
+
+                    </div>
+
+                </div>
+            </div>
+            <div style = " background-color: black;
+                  color: whitesmoke;
+                  padding: 20px;
+                  width: 900px;
+                  margin: 0 auto;
+                 justify-content: space-between;">
+                
+                <h2>Reservas e verificações feitas com sucesso:</h2>
+                <h:form>
+                            <h:dataTable value="#{JSFReserva.commit}" var="commit">
+                                <h:column>
+                                    <h:outputText value="Vendedor: #{commit.mesa.usuario}," />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="ID: #{commit.mesa.id}," />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="OP: #{commit.mesa.op}," />
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="#{commit.mesa.descricao} em uso." />
+                                </h:column>
+                            </h:dataTable>
+
+                        </h:form>
+            </div>
+        </div>
+        <div  class = "Listas">
+            <div  style = " background-color: black;
+                  color: whitesmoke;
+                  padding: 20px;">
+                <h2>Log</h2>
+                <h:form>
+                    <h:column>
+                        <h:commandButton value="Clear" action="#{JSFReserva.clearLog}" />
+                    </h:column>
+                    <h:dataTable value="#{JSFReserva.log}" var="log">
+                        <h:column>
+                            <h:outputText value="#{log}." />
+                        </h:column> 
+
+                    </h:dataTable>                       
+                </h:form>
+            </div>              
+        </div>
+
+    </h:body>
+</html>

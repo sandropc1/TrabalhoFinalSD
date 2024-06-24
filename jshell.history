@@ -1,0 +1,1 @@
+EXPRESSION#>wsimport -keep -verbose http://localhost:8080/EjbReservaService/EjbReserva?wsdl -d ./src
